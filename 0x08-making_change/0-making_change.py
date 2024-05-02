@@ -1,22 +1,23 @@
 #!/usr/bin/python3
-        """ modul make chage"""
-
-        from typing import List
-
-
-        def makeChange(coins, total) -> int:
-            """Determines the fewest number of coins needed to meet a given
-                amount total when given a pile of coins of different values.
-                    """
-                        coins_count = 0
-                            sorted_coins = sorted(coins, reverse=True)
-                                for coin in sorted_coins:
-                                        if total >= coin:
-                                                    coins_count += total // coin
-                                                                total %= coin
-                                                                    return coins_count if total == 0 else -1
+"""
+Main file for testing
+"""
 
 
-                                                                    if __name__ == '__main__':
-                                                                        print(makeChange([1, 2, 25], 37))
-                                                                            print(makeChange([1256, 54, 48, 16, 102], 1453))
+def makeChange(coins, total):
+    """
+    How many of this type of coin can I get with my money? Okay,
+        I'll take that many. Now, how much money do I have left?
+        And how many coins do I have in my pocket?
+    """
+    if total < 1:
+        return 0
+    coins.sort(reverse=True)
+    count = 0
+    for coin in coins:
+        if total == 0:
+            break
+        num = total // coin
+        total -= num * coin
+        count += num
+    return count if total == 0 else -1
