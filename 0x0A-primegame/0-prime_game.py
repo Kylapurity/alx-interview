@@ -1,45 +1,42 @@
 #!/usr/bin/python3
-""" The Prime Game"""
+"""0. Prime Game - Maria and Ben are playing a game"""
 
 
 def isWinner(x, nums):
+    """x - rounds
+    nums - numbers list
     """
-    Determines the winner of the prime game.
-
-    Args:
-        x (int): The number of rounds to be played.
-        nums (List[int]): A list of integers representing
-        the number of elements in each round.
-
-    Returns:
-        str: The name of the winner ('Maria' or 'Ben')
-        or None if there is no winner.
-
-    """
-    if x < 1 or not nums:
+    if x <= 0 or nums is None:
+        return None
+    if x != len(nums):
         return None
 
-    marias_wins = 0
-    bens_wins = 0
-    max_num = max(nums)
-    primes = [True] * (max_num + 1)
-    primes[0] = primes[1] = False
+    ben = 0
+    maria = 0
 
-    for i in range(2, int(max_num ** 0.5) + 1):
-        if primes[i]:
-            for j in range(i * i, max_num + 1, i):
-                primes[j] = False
+    a = [1 for x in range(sorted(nums)[-1] + 1)]
+    a[0], a[1] = 0, 0
+    for i in range(2, len(a)):
+        rm_multiples(a, i)
 
-    for n in nums:
-        primes_count = sum(primes[:n])
-        bens_wins += primes_count % 2 == 0
-        marias_wins += primes_count % 2 == 1
-
-    if marias_wins == bens_wins:
-        return None
-
-    return 'Maria' if marias_wins > bens_wins else 'Ben'
+    for i in nums:
+        if sum(a[0:i + 1]) % 2 == 0:
+            ben += 1
+        else:
+            maria += 1
+    if ben > maria:
+        return "Ben"
+    if maria > ben:
+        return "Maria"
+    return None
 
 
-if __name__ == "__main__":
-    print("Winner: {}".format(isWinner(5, [2, 5, 1, 4, 3])))
+def rm_multiples(ls, x):
+    """removes multiple
+    of primes
+    """
+    for i in range(2, len(ls)):
+        try:
+            ls[i * x] = 0
+        except (ValueError, IndexError):
+            break
